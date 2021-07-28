@@ -1,7 +1,12 @@
 package com.novelitech.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.aspectj.weaver.ast.Or;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 // Serializable - Quando quero que meus objetos sejam passíveis de transformação em cadeias de bytes para determinados fins
@@ -21,6 +26,11 @@ public class User implements Serializable {
     private String phone;
 
     private String password;
+
+    // O nome deve ser O MESMO do atributo que está na classe Order que faz o relacionamento
+    @JsonIgnore // para evitar o loop infinito na chamada do user
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
 
     public User() {}
 
@@ -70,6 +80,10 @@ public class User implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
     }
 
     @Override
