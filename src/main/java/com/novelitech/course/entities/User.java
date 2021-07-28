@@ -1,16 +1,25 @@
 package com.novelitech.course.entities;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 // Serializable - Quando quero que meus objetos sejam passíveis de transformação em cadeias de bytes para determinados fins
 // trafegue na rede, possa ser salvo em arquivo, etc
+@Entity
+@Table(name = "Users")
 public class User implements Serializable {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
+
     private String email;
+
     private String phone;
+
     private String password;
 
     public User() {}
