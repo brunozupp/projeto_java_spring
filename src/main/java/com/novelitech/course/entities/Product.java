@@ -22,7 +22,13 @@ public class Product implements Serializable {
 
     private String imgUrl;
 
-    @Transient // vai impedir que o JPA tente interpretar isso
+    //@Transient // vai impedir que o JPA tente interpretar isso
+    // inverseJoinColumns -> definir a chave estrangeira da outra entidade
+    // joinColumns -> chave estrangeira dessa classe
+    @ManyToMany
+    @JoinTable(name = "products_categories",
+            joinColumns = @JoinColumn(name = "productId"),
+            inverseJoinColumns = @JoinColumn(name = "categoryId"))
     private Set<Category> categories = new HashSet<>();
 
     public Product() { }

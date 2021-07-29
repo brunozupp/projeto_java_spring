@@ -1,5 +1,7 @@
 package com.novelitech.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -16,7 +18,9 @@ public class Category implements Serializable {
 
     private String name;
 
-    @Transient // vai impedir que o JPA tente interpretar isso
+    //@Transient // vai impedir que o JPA tente interpretar isso
+    @JsonIgnore // Para evitar o loop infinito ao acessar o endpoint de products
+    @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 
     public Category() {}
