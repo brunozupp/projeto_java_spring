@@ -63,6 +63,11 @@ public class OrderItem implements Serializable {
         this.price = price;
     }
 
+    // No Java EE, pra aparecer no json, precisa colocar o prefixo get
+    public Double getSubTotal() {
+        return quantity * price;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
