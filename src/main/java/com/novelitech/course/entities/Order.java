@@ -6,7 +6,9 @@ import com.novelitech.course.enums.OrderStatus;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "orders")
@@ -27,6 +29,10 @@ public class Order implements Serializable {
     @ManyToOne
     @JoinColumn(name = "clientId")
     private User client;
+
+    // Um order tem vários orderItem
+    @OneToMany(mappedBy = "id.order") // Eu tenho o id na classe OrderItem, que por sua vez possui o order como atributo que faz parte da construção da chave
+    private Set<OrderItem> items = new HashSet<>();
 
     public Order() {}
 
@@ -68,6 +74,10 @@ public class Order implements Serializable {
 
     public void setClient(User client) {
         this.client = client;
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
     }
 
     @Override
