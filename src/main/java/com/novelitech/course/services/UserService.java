@@ -2,6 +2,7 @@ package com.novelitech.course.services;
 
 import com.novelitech.course.entities.User;
 import com.novelitech.course.repositories.UserRepository;
+import com.novelitech.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -22,7 +23,8 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> obj = repository.findById(id);
-        return obj.get();
+        // Se não ter um valor, vai lançar a exceção
+        return obj.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User obj) {
