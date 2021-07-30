@@ -10,6 +10,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,14 +46,16 @@ public class UserService {
     }
 
     public User update(Long id, User obj) {
-        // Instancia pra mim um usuário, mas esse método não vai no banco de dados ainda, vai deixar apenas
-        // um objeto monitorado pelo JPA para eu trabalhar com ele e em seguida efetuar uma operação no banco de
-        // dados. Essa é a diferença entre getById e findById
-        User entity = repository.getById(id);
-
-        updateData(entity,obj);
-
-        return repository.save(entity);
+        try {
+            // Instancia pra mim um usuário, mas esse método não vai no banco de dados ainda, vai deixar apenas
+            // um objeto monitorado pelo JPA para eu trabalhar com ele e em seguida efetuar uma operação no banco de
+            // dados. Essa é a diferença entre getById e findById
+            User entity = repository.getById(id);
+            updateData(entity,obj);
+            return repository.save(entity);
+        } catch(EntityNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        }
     }
 
     private void updateData(User entity, User obj) {
